@@ -11,6 +11,16 @@ describe('Sign In Page', () => {
     browser.get('/sign-in');
     const signUpLink = element(by.id('signUpLink'));
     signUpLink.click();
-    expect(browser.getCurrentUrl()).toMatch(/\/sign-up$/);
+    expect(browser.getCurrentUrl()).toContain('/sign-up');
   });
+
+  it(
+    'should redirect to Password Reset Page on #passwordResetLink click',
+    () => {
+      browser.get('/sign-in');
+      const signUpLink = element(by.id('passwordResetLink'));
+      signUpLink.click();
+      expect(browser.getCurrentUrl()).toContain('/password-reset');
+    }
+  );
 });

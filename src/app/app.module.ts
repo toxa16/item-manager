@@ -6,8 +6,10 @@ import {AppComponent} from './app.component';
 import {SignInComponent} from './sign-in/sign-in.component';
 import {HomepageComponent} from './homapage/homepage.component';
 import {SignUpComponent} from './sign-up/sign-up.component';
+import {PasswordResetComponent} from './password-reset/password-reset.component';
 
 const routes: Routes = [
+  { path: 'password-reset', component: PasswordResetComponent },
   { path: 'sign-in', component: SignInComponent },
   { path: 'sign-up', component: SignUpComponent },
   { path: '', component: HomepageComponent },
@@ -17,6 +19,7 @@ const routes: Routes = [
   declarations: [
     AppComponent,
     HomepageComponent,
+    PasswordResetComponent,
     SignInComponent,
     SignUpComponent,
   ],
