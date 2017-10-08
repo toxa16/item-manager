@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 
 @Component({
-  template: `Sign In`,
+  templateUrl: 'sign-in.component.html',
+  //template: `sign in`,
 })
 export class SignInComponent {}
