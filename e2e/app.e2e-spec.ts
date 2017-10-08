@@ -1,14 +1,11 @@
-import { AppPage } from './app.po';
+import { HomePage } from './home-page.po';
+import {browser} from 'protractor';
 
-describe('item-manager App', () => {
-  let page: AppPage;
+describe('Item Manager Home Page', () => {
 
-  beforeEach(() => {
-    page = new AppPage();
+  it('should redirect to sign in page', () => {
+    HomePage.navigateTo();
+    expect(browser.getCurrentUrl()).toMatch(/\/sign-in$/);
   });
 
-  it('should display welcome message', () => {
-    page.navigateTo();
-    expect(page.getParagraphText()).toEqual('Welcome to app!');
-  });
 });
