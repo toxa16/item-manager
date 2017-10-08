@@ -1,4 +1,4 @@
-import { HomePage } from './home-page.po';
+import {HomePage} from './home-page.po';
 import {browser} from 'protractor';
 
 describe('Item Manager Home Page', () => {

@@ -9,16 +9,25 @@
   <section class="row">
     <div class="col col-md-8 ml-auto mr-auto col-lg-6">
 
-      <form id="signUpForm" method="get" action="success.html">
+      <form id="signUpForm" (submit)="onSubmit()">
 
         <div class="form-group mt-4">
-          <input type="email" placeholder="Email" class="form-control">
+          <input type="email" placeholder="Email" class="form-control"
+                 [formControl]="email"
+                 [class.is-invalid]="email.touched && email.invalid"
+                 [class.is-valid]="email.touched && email.valid">
+          <div *ngIf="email.invalid" class="invalid-feedback">
+            {{ emailErrorMessage }}
+          </div>
         </div>
 
         <div class="form-group mt-3">
-          <input type="password" placeholder="Password" class="form-control is-invalid">
-          <div class="invalid-feedback">
-            Password must be at least 4 characters long.
+          <input type="password" placeholder="Password" class="form-control"
+                 [formControl]="password"
+                 [class.is-invalid]="password.touched && password.invalid"
+                 [class.is-valid]="password.touched && password.valid">
+          <div *ngIf="password.invalid" class="invalid-feedback">
+            {{ passwordErrorMessage }}
           </div>
         </div>
 
@@ -27,8 +36,8 @@
         <div class="d-flex align-items-center mt-4">
           <button type="submit" class="btn btn-primary">Sign Up</button>
           <span class="ml-3">
-              or <a id="signInLink" routerLink="/sign-in">Sign In</a>
-            </span>
+            or <a id="signInLink" routerLink="/sign-in">Sign In</a>
+          </span>
         </div>
 
       </form>
