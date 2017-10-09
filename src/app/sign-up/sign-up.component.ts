@@ -1,19 +1,33 @@
 import {Component} from '@angular/core';
-import {FormControl, Validators} from '@angular/forms';
+import {AbstractControl, FormControl, ValidationErrors, Validators} from '@angular/forms';
+import {Observable} from 'rxjs/Observable';
+import 'rxjs/add/observable/of';
+import 'rxjs/add/operator/delay';
 
 @Component({
   templateUrl: 'sign-up.component.html'
 })
 export class SignUpComponent {
-  email: FormControl = new FormControl('', [Validators.required, Validators.email]);
+  email: FormControl;
   password: FormControl = new FormControl('',
     [Validators.required, Validators.minLength(4)]);
+
+  constructor() {
+    this.email = new FormControl('',
+      [Validators.required, Validators.email], this.checkEmailTaken.bind(this));
+  }
+
+  checkEmailTaken(control: AbstractControl): ValidationErrors|null {
+    return Observable.of({ emailTaken: true }).delay(1500);
+  }
 
   get emailErrorMessage(): string {
     if (this.email.hasError('required')) {
       return 'Email cannot be blank.';
     } else if (this.email.hasError('email')) {
       return 'Email is not a valid email address.';
+    } else if (this.email.hasError('emailTaken')) {
+      return 'This email address has already been taken.';
     } else {
       return '';
     }

@@ -39,8 +39,13 @@ describe(`EmailInputComponent`, () => {
     });
     it(`shouldn't append .is-valid CSS class`, () => {
       const input = fixture.nativeElement.querySelector('input');
-      const hasIsInvalidClass = input.classList.contains('is-valid');
-      expect(hasIsInvalidClass).toBe(false);
+      const hasIsValidClass = input.classList.contains('is-valid');
+      expect(hasIsValidClass).toBe(false);
+    });
+    it(`shouldn't append .is-pending CSS class`, () => {
+      const input = fixture.nativeElement.querySelector('input');
+      const hasIsPendingClass = input.classList.contains('is-pending');
+      expect(hasIsPendingClass).toBe(false);
     });
     it(`shouldn't display .invalid-feedback element`, () => {
       const feedback = fixture.nativeElement.querySelector('.invalid-feedback');
@@ -65,8 +70,13 @@ describe(`EmailInputComponent`, () => {
     });
     it(`shouldn't append .is-valid CSS class`, () => {
       const input = fixture.nativeElement.querySelector('input');
-      const hasIsInvalidClass = input.classList.contains('is-valid');
-      expect(hasIsInvalidClass).toBe(false);
+      const hasIsValidClass = input.classList.contains('is-valid');
+      expect(hasIsValidClass).toBe(false);
+    });
+    it(`shouldn't append .is-pending CSS class`, () => {
+      const input = fixture.nativeElement.querySelector('input');
+      const hasIsPendingClass = input.classList.contains('is-pending');
+      expect(hasIsPendingClass).toBe(false);
     });
     it(`shouldn't display .invalid-feedback element`, () => {
       const feedback = fixture.nativeElement.querySelector('.invalid-feedback');
@@ -75,7 +85,7 @@ describe(`EmailInputComponent`, () => {
   });
 
 
-  describe(`for invalid touched form control`, () => {
+  describe(`for invalid touched .form-control`, () => {
     const errorMessage = 'Email is not a valid email address';
 
     beforeEach(() => {
@@ -94,8 +104,13 @@ describe(`EmailInputComponent`, () => {
     });
     it(`shouldn't append .is-valid CSS class`, () => {
       const input = fixture.nativeElement.querySelector('input');
-      const hasIsInvalidClass = input.classList.contains('is-valid');
-      expect(hasIsInvalidClass).toBe(false);
+      const hasIsValidClass = input.classList.contains('is-valid');
+      expect(hasIsValidClass).toBe(false);
+    });
+    it(`shouldn't append .is-pending CSS class`, () => {
+      const input = fixture.nativeElement.querySelector('input');
+      const hasIsPendingClass = input.classList.contains('is-pending');
+      expect(hasIsPendingClass).toBe(false);
     });
     it(`should display .invalid-feedback element`, () => {
       const feedback = fixture.nativeElement.querySelector('.invalid-feedback');
@@ -110,7 +125,7 @@ describe(`EmailInputComponent`, () => {
   });
 
 
-  describe(`for valid touched form control`, () => {
+  describe(`for valid touched .form-control`, () => {
     beforeEach(() => {
       mockControl.setValue('email@email.com'); // valid = true
       mockControl.markAsTouched(); // touched = true
@@ -126,13 +141,34 @@ describe(`EmailInputComponent`, () => {
     });
     it(`should append .is-valid CSS class`, () => {
       const input = fixture.nativeElement.querySelector('input');
-      const hasIsInvalidClass = input.classList.contains('is-valid');
-      expect(hasIsInvalidClass).toBe(true);
+      const hasIsValidClass = input.classList.contains('is-valid');
+      expect(hasIsValidClass).toBe(true);
+    });
+    it(`shouldn't append .is-pending CSS class`, () => {
+      const input = fixture.nativeElement.querySelector('input');
+      const hasIsPendingClass = input.classList.contains('is-pending');
+      expect(hasIsPendingClass).toBe(false);
     });
     it(`shouldn't display .invalid-feedback element`, () => {
       const feedback = fixture.nativeElement.querySelector('.invalid-feedback');
       expect(feedback).toBeFalsy();
     });
+  });
+
+  describe('for pending touched .form-control', () => {
+    beforeEach(() => {
+      mockControl.setValue('email@email.com');
+      mockControl.markAsPending();  // pending = true
+      mockControl.markAsTouched();  // touched = true
+
+      component.formControl = mockControl;
+      fixture.detectChanges();
+    });
+
+    it(`shouldn't append .is-invalid CSS class`);
+    it(`shouldn't append .is-valid CSS class`);
+    it(`should append .is-pending CSS class`);
+    it(`shouldn't display .invalid-feedback element`);
   });
 
 });

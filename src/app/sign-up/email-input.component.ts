@@ -8,6 +8,7 @@ import {FormControl} from '@angular/forms';
       <input type="email" placeholder="Email" class="form-control"
              [formControl]="formControl"
              [class.is-invalid]="formControl.touched && formControl.invalid"
+             [class.is-pending]="formControl.pending"
              [class.is-valid]="formControl.touched && formControl.valid">
       <div *ngIf="formControl.touched && formControl.invalid" class="invalid-feedback">
         {{ errorMessage }}
