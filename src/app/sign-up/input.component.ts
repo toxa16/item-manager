@@ -36,7 +36,7 @@ import {FormControl} from '@angular/forms';
     }
   `],
 })
-export class EmailInputComponent {
+export class InputComponent {
   @Input() errorMessage: string = '';
   @Input() formControl: FormControl;
   @Input() placeholder: string = '';

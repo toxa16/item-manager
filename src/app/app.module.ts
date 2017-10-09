@@ -8,7 +8,7 @@ import {SignInComponent} from './sign-in/sign-in.component';
 import {HomepageComponent} from './homepage/homepage.component';
 import {SignUpComponent} from './sign-up/sign-up.component';
 import {PasswordResetComponent} from './password-reset/password-reset.component';
-import {EmailInputComponent} from './sign-up/email-input.component';
+import {InputComponent} from './sign-up/input.component';
 
 const routes: Routes = [
   { path: 'password-reset', component: PasswordResetComponent },
@@ -20,7 +20,7 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     AppComponent,
-    EmailInputComponent,
+    InputComponent,
     HomepageComponent,
     PasswordResetComponent,
     SignInComponent,

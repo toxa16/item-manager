@@ -1,20 +1,20 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormControl, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 
-import {EmailInputComponent} from './email-input.component';
+import {InputComponent} from './input.component';
 
-describe(`EmailInputComponent`, () => {
+describe(`InputComponent`, () => {
 
-  let component: EmailInputComponent;
-  let fixture: ComponentFixture<EmailInputComponent>;
+  let component: InputComponent;
+  let fixture: ComponentFixture<InputComponent>;
   const mockControl = new FormControl('', [Validators.required, Validators.email]);
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [EmailInputComponent],
+      declarations: [InputComponent],
       imports: [FormsModule, ReactiveFormsModule]
     });
-    fixture = TestBed.createComponent(EmailInputComponent);
+    fixture = TestBed.createComponent(InputComponent);
     component = fixture.componentInstance;
   });
 
