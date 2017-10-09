@@ -10,10 +10,11 @@ import {FormControl} from '@angular/forms';
              [class.is-invalid]="formControl.touched && formControl.invalid"
              [class.is-pending]="formControl.pending"
              [class.is-valid]="formControl.touched && formControl.valid" 
-             (blur)="onBlur($event)" 
-             (focus)="onFocus($event)">
+             (blur)="blur.emit($event)" 
+             (focus)="focus.emit($event)">
       <i class="pending-indicator fa fa-spinner fa-pulse"></i>
-      <div *ngIf="formControl.touched && formControl.invalid" class="invalid-feedback">
+      <div class="invalid-feedback" 
+           *ngIf="formControl.touched && formControl.invalid">
         {{ errorMessage }}
       </div>
     </div>
@@ -41,12 +42,4 @@ export class EmailInputComponent {
 
   @Output() blur: EventEmitter<any> = new EventEmitter();
   @Output() focus: EventEmitter<any> = new EventEmitter();
-
-  private onBlur($event) {
-    this.blur.emit($event);
-  }
-
-  private onFocus($event) {
-    this.focus.emit($event);
-  }
 }

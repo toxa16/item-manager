@@ -18,13 +18,11 @@ export class SignUpComponent {
   }
 
   checkEmailTaken(control: AbstractControl): ValidationErrors|null {
-    //return Observable.of({ emailTaken: true }).delay(1500);
-    return Observable.of(null).delay(1500);
+    return Observable.of({ emailTaken: true }).delay(1500);
+    //return Observable.of(null).delay(1500);
   }
 
   onEmailBlur() {
-    //alert('blur');
-    //this.email.setAsyncValidators(this.checkEmailTaken.bind(this));
     this.email.markAsPending();
     this.email.setAsyncValidators(this.checkEmailTaken.bind(this));
     this.email.updateValueAndValidity();
