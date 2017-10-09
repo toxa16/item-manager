@@ -2,10 +2,10 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {FormControl} from '@angular/forms';
 
 @Component({
-  selector: 'app-email-input',
+  selector: 'app-input',
   template: `
     <div class="form-group">
-      <input placeholder="Email" class="form-control"
+      <input [attr.type]="type" placeholder="{{ placeholder }}" class="form-control"
              [formControl]="formControl"
              [class.is-invalid]="formControl.touched && formControl.invalid"
              [class.is-pending]="formControl.pending"
@@ -37,8 +37,10 @@ import {FormControl} from '@angular/forms';
   `],
 })
 export class EmailInputComponent {
+  @Input() errorMessage: string = '';
   @Input() formControl: FormControl;
-  @Input() errorMessage: string;
+  @Input() placeholder: string = '';
+  @Input() type: string = 'text';
 
   @Output() blur: EventEmitter<any> = new EventEmitter();
   @Output() focus: EventEmitter<any> = new EventEmitter();

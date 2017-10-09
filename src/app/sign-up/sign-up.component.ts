@@ -8,14 +8,12 @@ import 'rxjs/add/operator/delay';
   templateUrl: 'sign-up.component.html'
 })
 export class SignUpComponent {
-  email: FormControl;
+  email: FormControl = new FormControl('',
+    [Validators.required, Validators.email]);
   password: FormControl = new FormControl('',
     [Validators.required, Validators.minLength(4)]);
 
-  constructor() {
-    this.email = new FormControl('',
-      [Validators.required, Validators.email]);
-  }
+  constructor() {}
 
   checkEmailTaken(control: AbstractControl): ValidationErrors|null {
     return Observable.of({ emailTaken: true }).delay(1500);
