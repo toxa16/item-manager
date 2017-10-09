@@ -4,7 +4,7 @@ import {FormControl} from '@angular/forms';
 @Component({
   selector: 'app-email-input',
   template: `
-    <div class="form-group position-relative">
+    <div class="form-group">
       <input placeholder="Email" class="form-control"
              [formControl]="formControl"
              [class.is-invalid]="formControl.touched && formControl.invalid"

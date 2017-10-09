@@ -11,14 +11,11 @@ describe(`EmailInputComponent`, () => {
   let fixture: ComponentFixture<EmailInputComponent>;
   const mockControl = new FormControl('', [Validators.required, Validators.email]);
 
-  beforeEach(async(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [EmailInputComponent],
       imports: [FormsModule, ReactiveFormsModule]
-    }).compileComponents();
-  }));
-
-  beforeEach(() => {
+    });
     fixture = TestBed.createComponent(EmailInputComponent);
     component = fixture.componentInstance;
   });
@@ -31,7 +28,6 @@ describe(`EmailInputComponent`, () => {
       component.formControl = mockControl;
       fixture.detectChanges();
     });
-
     it(`shouldn't append .is-invalid CSS class`, () => {
       const input = fixture.nativeElement.querySelector('input');
       const hasIsInvalidClass = input.classList.contains('is-invalid');
@@ -52,7 +48,6 @@ describe(`EmailInputComponent`, () => {
       expect(feedback).toBeFalsy();
     });
   });
-
 
   describe(`for valid untouched .form-control`, () => {
     beforeEach(() => {
@@ -62,7 +57,6 @@ describe(`EmailInputComponent`, () => {
       component.formControl = mockControl;
       fixture.detectChanges();
     });
-
     it(`shouldn't append .is-invalid CSS class`, () => {
       const input = fixture.nativeElement.querySelector('input');
       const hasIsInvalidClass = input.classList.contains('is-invalid');
@@ -84,19 +78,14 @@ describe(`EmailInputComponent`, () => {
     });
   });
 
-
   describe(`for invalid touched .form-control`, () => {
-    const errorMessage = 'Email is not a valid email address';
-
     beforeEach(() => {
       mockControl.setValue('email'); // invalid = true
       mockControl.markAsTouched(); // touched = true
 
       component.formControl = mockControl;
-      component.errorMessage = errorMessage;
       fixture.detectChanges();
     });
-
     it(`should append .is-invalid CSS class`, () => {
       const input = fixture.nativeElement.querySelector('input');
       const hasIsInvalidClass = input.classList.contains('is-invalid');
@@ -119,11 +108,13 @@ describe(`EmailInputComponent`, () => {
     it(
       `should display an error message in .invalid-feedback`,
       () => {
+        const errorMessage = 'Email is not a valid email address';
+        component.errorMessage = errorMessage;
+        fixture.detectChanges();
         const feedback = fixture.nativeElement.querySelector('.invalid-feedback');
         expect(feedback.innerHTML.trim()).toBe(errorMessage);
       });
   });
-
 
   describe(`for valid touched .form-control`, () => {
     beforeEach(() => {
@@ -133,7 +124,6 @@ describe(`EmailInputComponent`, () => {
       component.formControl = mockControl;
       fixture.detectChanges();
     });
-
     it(`shouldn't append .is-invalid CSS class`, () => {
       const input = fixture.nativeElement.querySelector('input');
       const hasIsInvalidClass = input.classList.contains('is-invalid');
@@ -155,20 +145,35 @@ describe(`EmailInputComponent`, () => {
     });
   });
 
-  describe('for pending touched .form-control', () => {
+  describe('for pending .form-control', () => {
     beforeEach(() => {
-      mockControl.setValue('email@email.com');
-      mockControl.markAsPending();  // pending = true
-      mockControl.markAsTouched();  // touched = true
-
       component.formControl = mockControl;
       fixture.detectChanges();
     });
-
-    it(`shouldn't append .is-invalid CSS class`);
-    it(`shouldn't append .is-valid CSS class`);
-    it(`should append .is-pending CSS class`);
-    it(`shouldn't display .invalid-feedback element`);
+    it(`shouldn't append .is-invalid CSS class`, () => {
+      mockControl.markAsPending();  // pending = true
+      fixture.detectChanges();
+      const input = fixture.nativeElement.querySelector('input');
+      expect(input.classList.contains('is-invalid')).toBe(false);
+    });
+    it(`shouldn't append .is-valid CSS class`, () => {
+      mockControl.markAsPending();  // pending = true
+      fixture.detectChanges();
+      const input = fixture.nativeElement.querySelector('input');
+      expect(input.classList.contains('is-valid')).toBe(false);
+    });
+    it(`should append .is-pending CSS class`, () => {
+      mockControl.markAsPending();  // pending = true
+      fixture.detectChanges();
+      const input = fixture.nativeElement.querySelector('input');
+      expect(input.classList.contains('is-pending')).toBe(true);
+    });
+    it(`shouldn't display .invalid-feedback element`, () => {
+      mockControl.markAsPending();  // pending = true
+      fixture.detectChanges();
+      const feedback = fixture.nativeElement.querySelector('.invalid-feedback');
+      expect(feedback).toBeFalsy();
+    });
   });
 
 });
