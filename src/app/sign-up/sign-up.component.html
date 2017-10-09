@@ -11,7 +11,20 @@
 
       <form id="signUpForm" (submit)="onSubmit()">
 
-        <div class="form-group mt-4">
+        Email invalid: {{ email.invalid | json }}
+        <br>
+        Email valid: {{ email.valid | json }}
+
+        <div class="mt-4">
+          <app-email-input
+            [formControl]="email"
+            [errorMessage]="emailErrorMessage"
+            ngDefaultControl>
+          </app-email-input>
+        </div>
+
+
+        <!--<div class="form-group mt-4">
           <input type="email" placeholder="Email" class="form-control"
                  [formControl]="email"
                  [class.is-invalid]="email.touched && email.invalid"
@@ -19,7 +32,7 @@
           <div *ngIf="email.invalid" class="invalid-feedback">
             {{ emailErrorMessage }}
           </div>
-        </div>
+        </div>-->
 
         <div class="form-group mt-3">
           <input type="password" placeholder="Password" class="form-control"
