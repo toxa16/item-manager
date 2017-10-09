@@ -19,6 +19,8 @@
           <app-email-input
             [formControl]="email"
             [errorMessage]="emailErrorMessage"
+            (blur)="onEmailBlur()"
+            (focus)="onEmailFocus()"
             ngDefaultControl>
           </app-email-input>
         </div>
