@@ -1,11 +1,11 @@
 import {Component} from '@angular/core';
 import {
-  AbstractControl, FormControl, FormGroup, ValidationErrors, Validators
+  FormControl, FormGroup, ValidationErrors, Validators
 } from '@angular/forms';
+import {Observable} from 'rxjs/Observable';
 
 import {AuthService} from '../auth.service';
 import {NoConnection} from '../../common/errors';
-import {Observable} from 'rxjs/Observable';
 
 @Component({
   templateUrl: 'sign-up.component.html'
@@ -22,25 +22,49 @@ export class SignUpComponent {
   ]);
 
   signUpForm: FormGroup;
+  private clientError = false;
+  private serverError = false;
 
   constructor(private authService: AuthService) {
     this.email.setAsyncValidators(this.checkEmailTaken.bind(this));
 
-    /*this.signUpForm = new FormGroup({
+    this.signUpForm = new FormGroup({
       email: this.email,
       password: this.password,
-    });*/
+    });
 
-    //this.signUpForm.setValidators(this.clientErrorValidator.bind(this));
+    this.signUpForm.setValidators([
+      this.clientErrorValidator.bind(this),
+      this.serverErrorValidator.bind(this),
+    ]);
   }
 
-  checkEmailTaken(control: AbstractControl): ValidationErrors|null {
-    console.log(`validating check email for ${control.value}...`);
+  private clientErrorValidator(): ValidationErrors|null {
+    return this.clientError ? { clientError: true } : null;
+  }
+
+  private serverErrorValidator(): ValidationErrors|null {
+    return this.serverError ? { serverError: true } : null;
+  }
+
+  /**
+   * EmailTaken validator.
+   * @returns {Observable<ValidationErrors>}
+   */
+  checkEmailTaken(): Observable<ValidationErrors|null> {
     return this.authService.checkEmail(this.email.value)
-      .then(available => available ? null : { emailTaken: true },)
+      .map(available => {
+        return available ? null : { emailTaken: true };
+      })
       .catch(err => {
-        console.log(err);
-        return { emailTaken: true };
+        if (err instanceof NoConnection) {
+          this.serverError = true;
+        } else {
+          this.clientError = true;
+        }
+        this.signUpForm.updateValueAndValidity();
+        this.email.clearAsyncValidators();
+        return Observable.of(null);
       });
   }
 
@@ -78,8 +102,14 @@ export class SignUpComponent {
     this.email.markAsTouched();
     this.password.markAsTouched();
 
+    console.log('sign up...');
+
     /*if (this.isFormValid) {
       alert('Signing up...');
     }*/
+  }
+
+  reload() {
+    window.location.reload();
   }
 }

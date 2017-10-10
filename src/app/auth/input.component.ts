@@ -45,17 +45,17 @@ export class InputComponent {
   @Output() blur: EventEmitter<any> = new EventEmitter();
   @Output() focus: EventEmitter<any> = new EventEmitter();
 
-  // TODO: test
+  // TODO: test behavior
   private asyncValidator: AsyncValidatorFn|null;
 
-  // TODO: test
+  // TODO: test behavior
   private onBlur(): void {
     this.formControl.markAsPending();
     this.formControl.setAsyncValidators(this.asyncValidator);
     this.formControl.updateValueAndValidity();
   }
 
-  // TODO: test
+  // TODO: test behavior
   private onFocus(): void {
     this.asyncValidator = this.formControl.asyncValidator;
     this.formControl.clearAsyncValidators();

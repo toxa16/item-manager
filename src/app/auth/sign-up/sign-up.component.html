@@ -9,47 +9,33 @@
   <section class="row">
     <div class="col col-md-8 ml-auto mr-auto col-lg-6">
 
-      <form id="signUpForm" (submit)="onSubmit()">
+      <!-- TODO: test -->
+      <div *ngIf="signUpForm.hasError('clientError')" class="alert alert-danger">
+        <span>We've encountered an internal error. Reload the page</span><br>
+        <span>If the error remains, please contact our tech support.</span>
+      </div>
+      <div *ngIf="signUpForm.hasError('serverError')" class="alert alert-danger">
+        There were problems while connecting to server. Reload the page
+      </div>
+
+      <form [formGroup]="signUpForm" id="signUpForm" (submit)="onSubmit()">
 
         <div class="mt-4">
           <app-input
             ngDefaultControl
-            [formControl]="email"
+            [formControl]="signUpForm.controls['email']"
             [errorMessage]="emailErrorMessage"
             [placeholder]="'Email'">
           </app-input>
         </div>
 
-
         <app-input
           ngDefaultControl
-          [formControl]="password"
+          [formControl]="signUpForm.controls['password']"
           [errorMessage]="passwordErrorMessage"
           [placeholder]="'Password'"
           [type]="'password'">
         </app-input>
-
-
-
-        <!--<div class="form-group mt-4">
-          <input type="email" placeholder="Email" class="form-control"
-                 [formControl]="email"
-                 [class.is-invalid]="email.touched && email.invalid"
-                 [class.is-valid]="email.touched && email.valid">
-          <div *ngIf="email.invalid" class="invalid-feedback">
-            {{ emailErrorMessage }}
-          </div>
-        </div>-->
-
-        <!--<div class="form-group mt-3">
-          <input type="password" placeholder="Password" class="form-control"
-                 [formControl]="password"
-                 [class.is-invalid]="password.touched && password.invalid"
-                 [class.is-valid]="password.touched && password.valid">
-          <div *ngIf="password.invalid" class="invalid-feedback">
-            {{ passwordErrorMessage }}
-          </div>
-        </div>-->
 
         <div class="clearfix"></div>
 

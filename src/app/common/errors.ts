@@ -1,1 +1,1 @@
-export class NoConnection extends Error {}
+export class NoConnection {}

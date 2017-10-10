@@ -7,7 +7,7 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/delay';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
-import {ValidationErrors} from '@angular/forms';
+
 import {NoConnection} from '../common/errors';
 
 
@@ -16,10 +16,10 @@ export class AuthService {
 
   constructor(private http: Http) {}
 
-  checkEmail(email: string): Promise<boolean> {
-    //return Observable.of({ emailTaken: true }).delay(1500);
-    return this.http.get('http://localhost:3000').toPromise()
-      .then(res => {
+  checkEmail(email: string): Observable<boolean> {
+
+    return this.http.get('http://localhost:3000')
+      .map(res => {
         console.log(res.status);
         return res.ok;
       })
@@ -27,6 +27,7 @@ export class AuthService {
         throw new NoConnection();
       });
 
+    //return Observable.of({ emailTaken: true }).delay(1500);
     //return Observable.of(true).delay(1500);
   }
 }
