@@ -101,7 +101,7 @@ describe('SignUpComponent', () => {
         'password should be marked as touched');
     });
 
-    it(`shouldn't call 'signUp() while the form is invalid`, () => {
+    it(`shouldn't call signUp() while the form is invalid`, () => {
       // init
       const stubService = {
         signUp: (email: string, password: string) => {}
@@ -115,7 +115,7 @@ describe('SignUpComponent', () => {
       expect(stubService.signUp).toHaveBeenCalledTimes(0);
     });
 
-    it(`shouldn't call 'signUp() while the form is pending`, () => {
+    it(`shouldn't call signUp() while the form is pending`, () => {
       // init
       const stubService = {
         signUp: (email: string, password: string) => {}
@@ -128,6 +128,94 @@ describe('SignUpComponent', () => {
       // assert
       expect(stubService.signUp).toHaveBeenCalledTimes(0);
     });
+
+    it(
+      `should mark signUpForm as pending once called validly`,
+      () => {
+        // init
+        const stubService = {
+          signUp: (email: string, password: string) => Observable.of(null)
+        };
+        const component = new SignUpComponent(stubService as AuthService);
+        component.email.clearAsyncValidators();
+        component.email.setValue('four@email.com');
+        component.password.setValue('4444');
+        // exec
+        component.onSubmit();
+        expect(component.signUpForm.pending).toBe(true);
+      }
+    );
+
+    it(
+      `should set form.serverError on NoConnection error`,
+      done => {
+        // init
+        const stubService = {
+          signUp: (email: string, password: string): Observable<null> => {
+            return Observable.throw(new NoConnection());
+          }
+        };
+        const component = new SignUpComponent(stubService as AuthService);
+        component.email.clearAsyncValidators();
+        component.email.setValue('four@email.com');
+        component.password.setValue('4444');
+        // exec
+        Observable.of(component.onSubmit()).subscribe(() => {
+          // assert
+          const hasServerError = component.signUpForm.hasError('serverError');
+          expect(hasServerError).toBe(true);
+          done();
+        });
+      }
+    );
+
+    it(
+      `should set form.clientError on random error`,
+      done => {
+        // init
+        const stubService = {
+          signUp: (email: string, password: string): Observable<null> => {
+            return Observable.throw(1);
+          }
+        };
+        const component = new SignUpComponent(stubService as AuthService);
+        component.email.clearAsyncValidators();
+        component.email.setValue('four@email.com');
+        component.password.setValue('4444');
+        // exec
+        Observable.of(component.onSubmit()).subscribe(() => {
+          // assert
+          const hasClientError = component.signUpForm.hasError('clientError');
+          expect(hasClientError).toBe(true);
+          done();
+        });
+      }
+    );
+
+    it(
+      `should clear email async validator on signUp() reject`,
+      done => {
+        // init
+        const stubService = {
+          checkEmail: (email: string): Observable<boolean> => {
+            return Observable.of(true);
+          },
+          signUp: (email: string, password: string): Observable<null> => {
+            return Observable.throw(new Error());
+          }
+        };
+        const component = new SignUpComponent(stubService as AuthService);
+        //component.email.clearAsyncValidators();
+        component.email.setValue('four@email.com');
+        component.password.setValue('4444');
+        // exec
+        Observable.of(component.onSubmit()).subscribe(() => {
+          // assert
+          expect(component.email.asyncValidator).toBe(null);
+          done();
+        });
+      }
+    );
   });
 
 });

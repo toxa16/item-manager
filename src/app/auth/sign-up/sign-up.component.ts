@@ -65,13 +65,7 @@ export class SignUpComponent {
         return available ? null : { emailTaken: true };
       })
       .catch(err => {
-        if (err instanceof NoConnection) {
-          this.serverError = true;
-        } else {
-          this.clientError = true;
-        }
-        this.signUpForm.updateValueAndValidity();
-        this.email.clearAsyncValidators();
+        this.handleError(err);
         return Observable.of(null);
       });
   }
@@ -111,8 +105,27 @@ export class SignUpComponent {
     this.password.markAsTouched();
 
     if (this.signUpForm.valid) {
-      this.authService.signUp(this.email.value, this.password.value);
+      this.signUpForm.markAsPending();
+      this.authService.signUp(this.email.value, this.password.value)
+        .subscribe(
+          () => {},
+          this.handleError.bind(this)
+        );
     }
+  }
+
+  /**
+   * Service error handler.
+   * @param {Error} err
+   */
+  private handleError(err: Error): void {
+    if (err instanceof NoConnection) {
+      this.serverError = true;
+    } else {
+      this.clientError = true;
+    }
+    this.signUpForm.updateValueAndValidity();
+    this.email.clearAsyncValidators();
   }
 
 }
