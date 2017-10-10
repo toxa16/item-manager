@@ -10,25 +10,30 @@ import 'rxjs/add/operator/delay';
 export class SignUpComponent {
   email: FormControl = new FormControl('',
     [Validators.required, Validators.email]);
-  password: FormControl = new FormControl('',
-    [Validators.required, Validators.minLength(4)]);
+  password: FormControl = new FormControl('', [
+    Validators.required,
+    Validators.minLength(4),
+    Validators.pattern(/^[\x21-\x7e]+$/),
+  ]);
 
-  constructor() {}
+  constructor() {
+    this.email.setAsyncValidators(this.checkEmailTaken.bind(this));
+  }
 
   checkEmailTaken(control: AbstractControl): ValidationErrors|null {
     return Observable.of({ emailTaken: true }).delay(1500);
     //return Observable.of(null).delay(1500);
   }
 
-  onEmailBlur() {
+  /*onEmailBlur() {
     this.email.markAsPending();
     this.email.setAsyncValidators(this.checkEmailTaken.bind(this));
     this.email.updateValueAndValidity();
-  }
+  }*/
 
-  onEmailFocus() {
+  /*onEmailFocus() {
     this.email.clearAsyncValidators();
-  }
+  }*/
 
   get emailErrorMessage(): string {
     if (this.email.hasError('required')) {
@@ -45,6 +50,9 @@ export class SignUpComponent {
   get passwordErrorMessage(): string {
     if (this.password.hasError('required')) {
       return 'Password cannot be blank.';
+    } else if (this.password.hasError('pattern')) {
+      return 'Password should contain only Latin letters, ' +
+        'digits and punctuation characters.';
     } else if (this.password.hasError('minlength')) {
       return 'Password should be at least 4 characters long.';
     } else {
