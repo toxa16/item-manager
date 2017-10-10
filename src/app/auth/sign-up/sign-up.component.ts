@@ -1,41 +1,48 @@
 import {Component} from '@angular/core';
 import {
-  AbstractControl, FormControl, ValidationErrors, Validators
+  AbstractControl, FormControl, FormGroup, ValidationErrors, Validators
 } from '@angular/forms';
+
+import {AuthService} from '../auth.service';
+import {NoConnection} from '../../common/errors';
 import {Observable} from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/delay';
 
 @Component({
   templateUrl: 'sign-up.component.html'
 })
 export class SignUpComponent {
-  email: FormControl = new FormControl('',
-    [Validators.required, Validators.email]);
+  email: FormControl = new FormControl('', [
+    Validators.required,
+    Validators.email
+  ]);
   password: FormControl = new FormControl('', [
     Validators.required,
     Validators.minLength(4),
     Validators.pattern(/^[\x21-\x7e]+$/),
   ]);
 
-  constructor() {
+  signUpForm: FormGroup;
+
+  constructor(private authService: AuthService) {
     this.email.setAsyncValidators(this.checkEmailTaken.bind(this));
+
+    /*this.signUpForm = new FormGroup({
+      email: this.email,
+      password: this.password,
+    });*/
+
+    //this.signUpForm.setValidators(this.clientErrorValidator.bind(this));
   }
 
   checkEmailTaken(control: AbstractControl): ValidationErrors|null {
-    return Observable.of({ emailTaken: true }).delay(1500);
-    //return Observable.of(null).delay(1500);
+    console.log(`validating check email for ${control.value}...`);
+    return this.authService.checkEmail(this.email.value)
+      .then(available => available ? null : { emailTaken: true },)
+      .catch(err => {
+        console.log(err);
+        return { emailTaken: true };
+      });
   }
-
-  /*onEmailBlur() {
-    this.email.markAsPending();
-    this.email.setAsyncValidators(this.checkEmailTaken.bind(this));
-    this.email.updateValueAndValidity();
-  }*/
-
-  /*onEmailFocus() {
-    this.email.clearAsyncValidators();
-  }*/
 
   get emailErrorMessage(): string {
     if (this.email.hasError('required')) {
@@ -62,16 +69,17 @@ export class SignUpComponent {
     }
   }
 
-  private get isFormValid(): boolean {
+
+  /*private get isFormValid(): boolean {
     return this.email.valid && this.password.valid;
-  }
+  }*/
 
   onSubmit(): void {
     this.email.markAsTouched();
     this.password.markAsTouched();
 
-    if (this.isFormValid) {
+    /*if (this.isFormValid) {
       alert('Signing up...');
-    }
+    }*/
   }
 }

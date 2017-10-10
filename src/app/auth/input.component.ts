@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {FormControl} from '@angular/forms';
+import {AsyncValidatorFn, FormControl} from '@angular/forms';
 
 @Component({
   selector: 'app-input',
@@ -10,8 +10,8 @@ import {FormControl} from '@angular/forms';
              [class.is-invalid]="formControl.touched && formControl.invalid"
              [class.is-pending]="formControl.pending"
              [class.is-valid]="formControl.touched && formControl.valid" 
-             (blur)="blur.emit($event)" 
-             (focus)="focus.emit($event)">
+             (blur)="onBlur()" 
+             (focus)="onFocus()">
       <i class="pending-indicator fa fa-spinner fa-pulse"></i>
       <div class="invalid-feedback" 
            *ngIf="formControl.touched && formControl.invalid">
@@ -44,4 +44,20 @@ export class InputComponent {
 
   @Output() blur: EventEmitter<any> = new EventEmitter();
   @Output() focus: EventEmitter<any> = new EventEmitter();
+
+  // TODO: test
+  private asyncValidator: AsyncValidatorFn|null;
+
+  // TODO: test
+  private onBlur(): void {
+    this.formControl.markAsPending();
+    this.formControl.setAsyncValidators(this.asyncValidator);
+    this.formControl.updateValueAndValidity();
+  }
+
+  // TODO: test
+  private onFocus(): void {
+    this.asyncValidator = this.formControl.asyncValidator;
+    this.formControl.clearAsyncValidators();
+  }
 }
