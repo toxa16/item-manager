@@ -47,9 +47,9 @@ export abstract class AbstractForm {
   /**
    * Service error handler.
    * To be used primarily to handle errors from Http services.
-   * @param {Error} err
+   * @param err
    */
-  public handleError(err: Error): void {
+  public handleError(err: any): void {
     if (err instanceof NoConnection) {
       this.serverError = true;
     } else {
@@ -72,7 +72,7 @@ export abstract class AbstractForm {
     }
     if (this.formGroup.valid) {
       this.formGroup.markAsPending();
-      this.onSubmitSuccess()
+      this.onSubmitSuccess();
     }
   };
 
