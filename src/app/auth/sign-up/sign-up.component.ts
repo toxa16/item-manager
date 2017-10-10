@@ -5,7 +5,6 @@ import {
 import {Observable} from 'rxjs/Observable';
 
 import {AuthService} from '../auth.service';
-import {NoConnection} from '../../common/errors';
 import {AbstractForm} from '../../forms/abstract-form';
 
 @Component({
