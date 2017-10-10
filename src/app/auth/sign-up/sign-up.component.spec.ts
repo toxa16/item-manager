@@ -15,7 +15,7 @@ describe('SignUpComponent', () => {
       const component = new SignUpComponent(stubService);
 
       component.checkEmailTaken().subscribe(() => {
-        const hasServerError = component.signUpForm.hasError('serverError');
+        const hasServerError = component.formGroup.hasError('serverError');
         expect(hasServerError).toBe(true);
         done();
       });
@@ -30,7 +30,7 @@ describe('SignUpComponent', () => {
       const component = new SignUpComponent(stubService);
 
       component.checkEmailTaken().subscribe(() => {
-        const hasClientError = component.signUpForm.hasError('clientError');
+        const hasClientError = component.formGroup.hasError('clientError');
         expect(hasClientError).toBe(true);
         done();
       });
@@ -107,7 +107,7 @@ describe('SignUpComponent', () => {
         signUp: (email: string, password: string) => {}
       };
       const component = new SignUpComponent(stubService as AuthService);
-      component.signUpForm.setErrors({ clientError: true });
+      component.formGroup.setErrors({ clientError: true });
       spyOn(stubService, 'signUp');
       // exec
       component.onSubmit();
@@ -121,7 +121,7 @@ describe('SignUpComponent', () => {
         signUp: (email: string, password: string) => {}
       };
       const component = new SignUpComponent(stubService as AuthService);
-      component.signUpForm.markAsPending();
+      component.formGroup.markAsPending();
       spyOn(stubService, 'signUp');
       // exec
       component.onSubmit();
@@ -142,7 +142,7 @@ describe('SignUpComponent', () => {
         component.password.setValue('4444');
         // exec
         component.onSubmit();
-        expect(component.signUpForm.pending).toBe(true);
+        expect(component.formGroup.pending).toBe(true);
       }
     );
 
@@ -162,7 +162,7 @@ describe('SignUpComponent', () => {
         // exec
         Observable.of(component.onSubmit()).subscribe(() => {
           // assert
-          const hasServerError = component.signUpForm.hasError('serverError');
+          const hasServerError = component.formGroup.hasError('serverError');
           expect(hasServerError).toBe(true);
           done();
         });
@@ -185,7 +185,7 @@ describe('SignUpComponent', () => {
         // exec
         Observable.of(component.onSubmit()).subscribe(() => {
           // assert
-          const hasClientError = component.signUpForm.hasError('clientError');
+          const hasClientError = component.formGroup.hasError('clientError');
           expect(hasClientError).toBe(true);
           done();
         });

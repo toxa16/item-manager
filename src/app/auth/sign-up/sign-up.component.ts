@@ -6,11 +6,12 @@ import {Observable} from 'rxjs/Observable';
 
 import {AuthService} from '../auth.service';
 import {NoConnection} from '../../common/errors';
+import {AbstractForm} from '../../forms/abstract-form';
 
 @Component({
   templateUrl: 'sign-up.component.html'
 })
-export class SignUpComponent {
+export class SignUpComponent extends AbstractForm {
   email: FormControl = new FormControl('', [
     Validators.required,
     Validators.email
@@ -21,38 +22,15 @@ export class SignUpComponent {
     Validators.pattern(/^[\x21-\x7e]+$/),
   ]);
 
-  signUpForm: FormGroup;
-  private clientError = false;
-  private serverError = false;
+  formGroup: FormGroup;
 
   constructor(private authService: AuthService) {
+    super();
+
     this.email.setAsyncValidators(this.checkEmailTaken.bind(this));
 
-    this.signUpForm = new FormGroup({
-      email: this.email,
-      password: this.password,
-    });
-
-    this.signUpForm.setValidators([
-      this.clientErrorValidator.bind(this),
-      this.serverErrorValidator.bind(this),
-    ]);
-  }
-
-  /**
-   * ClientError validator.
-   * @returns {ValidationErrors}
-   */
-  private clientErrorValidator(): ValidationErrors|null {
-    return this.clientError ? { clientError: true } : null;
-  }
-
-  /**
-   * ServerError validator.
-   * @returns {ValidationErrors}
-   */
-  private serverErrorValidator(): ValidationErrors|null {
-    return this.serverError ? { serverError: true } : null;
+    this.formGroup.addControl('email', this.email);
+    this.formGroup.addControl('password', this.password);
   }
 
   /**
@@ -95,37 +73,12 @@ export class SignUpComponent {
     }
   }
 
-
-  /*private get isFormValid(): boolean {
-    return this.email.valid && this.password.valid;
-  }*/
-
-  onSubmit(): void {
-    this.email.markAsTouched();
-    this.password.markAsTouched();
-
-    if (this.signUpForm.valid) {
-      this.signUpForm.markAsPending();
-      this.authService.signUp(this.email.value, this.password.value)
-        .subscribe(
-          () => {},
-          this.handleError.bind(this)
-        );
-    }
-  }
-
-  /**
-   * Service error handler.
-   * @param {Error} err
-   */
-  private handleError(err: Error): void {
-    if (err instanceof NoConnection) {
-      this.serverError = true;
-    } else {
-      this.clientError = true;
-    }
-    this.signUpForm.updateValueAndValidity();
-    this.email.clearAsyncValidators();
+  onSubmitSuccess(): void {
+    this.authService.signUp(this.email.value, this.password.value)
+      .subscribe(
+        () => {},
+        this.handleError.bind(this)
+      );
   }
 
 }

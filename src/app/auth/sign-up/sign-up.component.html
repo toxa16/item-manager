@@ -9,23 +9,23 @@
   <section class="row">
     <div class="col col-md-8 ml-auto mr-auto col-lg-6">
 
-      <div *ngIf="signUpForm.hasError('clientError')" class="alert alert-danger">
+      <div *ngIf="formGroup.hasError('clientError')" class="alert alert-danger">
         <span>
           We've encountered an internal error.
           Try <a href="/sign-up">reloading the page</a>.
         </span><br>
         <span>If the error remains, please contact our tech support.</span>
       </div>
-      <div *ngIf="signUpForm.hasError('serverError')" class="alert alert-danger">
+      <div *ngIf="formGroup.hasError('serverError')" class="alert alert-danger">
         There were problems while connecting to server. <a href="/sign-up">Try again</a>
       </div>
 
-      <form [formGroup]="signUpForm" id="signUpForm" (submit)="onSubmit()">
+      <form [formGroup]="formGroup" id="signUpForm" (submit)="onSubmit()">
 
         <div class="mt-4">
           <app-input
             ngDefaultControl
-            [formControl]="signUpForm.controls['email']"
+            [formControl]="formGroup.controls['email']"
             [errorMessage]="emailErrorMessage"
             [placeholder]="'Email'">
           </app-input>
@@ -33,7 +33,7 @@
 
         <app-input
           ngDefaultControl
-          [formControl]="signUpForm.controls['password']"
+          [formControl]="formGroup.controls['password']"
           [errorMessage]="passwordErrorMessage"
           [placeholder]="'Password'"
           [type]="'password'">

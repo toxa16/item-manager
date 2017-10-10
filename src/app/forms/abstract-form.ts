@@ -1,10 +1,23 @@
 import {FormGroup, ValidationErrors} from '@angular/forms';
 import {NoConnection} from '../common/errors';
 
-export abstract class AbstractFormComponent {
+export abstract class AbstractForm {
+
+  /**
+   * Primary-role form model.
+   */
   public abstract formGroup: FormGroup;
 
+  /**
+   * `clientError` validator flag.
+   * @type {boolean}
+   */
   private clientError = false;
+
+  /**
+   * `serverError` validator flag.
+   * @type {boolean}
+   */
   private serverError = false;
 
   constructor() {
@@ -16,7 +29,7 @@ export abstract class AbstractFormComponent {
   }
 
   /**
-   * ClientError validator.
+   * `clientError` validator.
    * @returns {ValidationErrors}
    */
   private clientErrorValidator(): ValidationErrors|null {
@@ -24,7 +37,7 @@ export abstract class AbstractFormComponent {
   }
 
   /**
-   * ServerError validator.
+   * `serverError` validator.
    * @returns {ValidationErrors}
    */
   private serverErrorValidator(): ValidationErrors|null {
@@ -33,9 +46,10 @@ export abstract class AbstractFormComponent {
 
   /**
    * Service error handler.
+   * To be used primarily to handle errors from Http services.
    * @param {Error} err
    */
-  protected handleError(err: Error): void {
+  public handleError(err: Error): void {
     if (err instanceof NoConnection) {
       this.serverError = true;
     } else {
@@ -47,4 +61,23 @@ export abstract class AbstractFormComponent {
       control.clearAsyncValidators();
     }
   }
+
+  /**
+   * Submit event listener of the primary form.
+   * Verifies form validity before performing `onSubmitSuccess()` action.
+   */
+  public onSubmit(): void {
+    for (const control of Object.values(this.formGroup.controls)) {
+      control.markAsTouched();
+    }
+    if (this.formGroup.valid) {
+      this.formGroup.markAsPending();
+      this.onSubmitSuccess()
+    }
+  };
+
+  /**
+   * An action to be performed when valid form is submitted.
+   */
+  public abstract onSubmitSuccess(): void;
 }
