@@ -2,12 +2,10 @@ import {Observable} from 'rxjs/Observable';
 import {NoConnection} from '../../common/errors';
 import {AuthService} from '../auth.service';
 import {SignUpComponent} from './sign-up.component';
-import has = Reflect.has;
 
 describe('SignUpComponent', () => {
 
   describe('#checkEmailTaken()', () => {
-
     it(`should set signUpForm.serverError on NoConnection error`, done => {
       const stubService = {
         checkEmail: (email: string): Observable<boolean> => {
@@ -84,6 +82,51 @@ describe('SignUpComponent', () => {
         expect(component.email.asyncValidator).toBe(null);
         done();
       });
+    });
+  });
+
+  describe('#onSubmit()', () => {
+    it(`should mark all form fields as touched`, () => {
+      // init
+      const stubService = {
+        signUp: (email: string, password: string) => {}
+      };
+      const component = new SignUpComponent(stubService as AuthService);
+      // exec
+      component.onSubmit();
+      // assert
+      expect(component.email.touched).toBe(true,
+        'email should be marked as touched');
+      expect(component.password.touched).toBe(true,
+        'password should be marked as touched');
+    });
+
+    it(`shouldn't call 'signUp() while the form is invalid`, () => {
+      // init
+      const stubService = {
+        signUp: (email: string, password: string) => {}
+      };
+      const component = new SignUpComponent(stubService as AuthService);
+      component.signUpForm.setErrors({ clientError: true });
+      spyOn(stubService, 'signUp');
+      // exec
+      component.onSubmit();
+      // assert
+      expect(stubService.signUp).toHaveBeenCalledTimes(0);
+    });
+
+    it(`shouldn't call 'signUp() while the form is pending`, () => {
+      // init
+      const stubService = {
+        signUp: (email: string, password: string) => {}
+      };
+      const component = new SignUpComponent(stubService as AuthService);
+      component.signUpForm.markAsPending();
+      spyOn(stubService, 'signUp');
+      // exec
+      component.onSubmit();
+      // assert
+      expect(stubService.signUp).toHaveBeenCalledTimes(0);
     });
   });
 

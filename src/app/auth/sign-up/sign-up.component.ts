@@ -39,10 +39,18 @@ export class SignUpComponent {
     ]);
   }
 
+  /**
+   * ClientError validator.
+   * @returns {ValidationErrors}
+   */
   private clientErrorValidator(): ValidationErrors|null {
     return this.clientError ? { clientError: true } : null;
   }
 
+  /**
+   * ServerError validator.
+   * @returns {ValidationErrors}
+   */
   private serverErrorValidator(): ValidationErrors|null {
     return this.serverError ? { serverError: true } : null;
   }
@@ -102,14 +110,9 @@ export class SignUpComponent {
     this.email.markAsTouched();
     this.password.markAsTouched();
 
-    console.log('sign up...');
-
-    /*if (this.isFormValid) {
-      alert('Signing up...');
-    }*/
+    if (this.signUpForm.valid) {
+      this.authService.signUp(this.email.value, this.password.value);
+    }
   }
 
-  reload() {
-    window.location.reload();
-  }
 }

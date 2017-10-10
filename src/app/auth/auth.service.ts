@@ -24,10 +24,14 @@ export class AuthService {
         return res.ok;
       })
       .catch(err => {
-        throw new NoConnection();
+        throw new Error();
       });
 
     //return Observable.of({ emailTaken: true }).delay(1500);
     //return Observable.of(true).delay(1500);
+  }
+
+  signUp(email: string, password: string): Observable<null> {
+    return null;
   }
 }

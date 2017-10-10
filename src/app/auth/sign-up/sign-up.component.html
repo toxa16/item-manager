@@ -9,13 +9,15 @@
   <section class="row">
     <div class="col col-md-8 ml-auto mr-auto col-lg-6">
 
-      <!-- TODO: test -->
       <div *ngIf="signUpForm.hasError('clientError')" class="alert alert-danger">
-        <span>We've encountered an internal error. Reload the page</span><br>
+        <span>
+          We've encountered an internal error.
+          Try <a href="/sign-up">reloading the page</a>.
+        </span><br>
         <span>If the error remains, please contact our tech support.</span>
       </div>
       <div *ngIf="signUpForm.hasError('serverError')" class="alert alert-danger">
-        There were problems while connecting to server. Reload the page
+        There were problems while connecting to server. <a href="/sign-up">Try again</a>
       </div>
 
       <form [formGroup]="signUpForm" id="signUpForm" (submit)="onSubmit()">
