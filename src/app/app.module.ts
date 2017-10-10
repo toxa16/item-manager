@@ -1,14 +1,15 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {RouterModule, Routes} from '@angular/router';
+import {Routes} from '@angular/router';
 
 import {AppComponent} from './app.component';
 import {SignInComponent} from './auth/sign-in/sign-in.component';
 import {HomepageComponent} from './homepage/homepage.component';
 import {SignUpComponent} from './auth/sign-up/sign-up.component';
 import {PasswordResetComponent} from './auth/password-reset/password-reset.component';
-import {InputComponent} from './auth/sign-up/input.component';
+import {InputComponent} from './auth/input.component';
+import {AppRoutingModule} from './app-routing.module';
 
 const routes: Routes = [
   { path: 'password-reset', component: PasswordResetComponent },
@@ -30,7 +31,7 @@ const routes: Routes = [
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
-    RouterModule.forRoot(routes),
+    AppRoutingModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
