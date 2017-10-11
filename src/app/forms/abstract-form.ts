@@ -1,6 +1,6 @@
 /**
  * @copyright 2017 Anton Bakhurynskyi
- * @licence MIT
+ * @license MIT
  * @see https://github.com/toxa16/item-manager
  */
 import {FormGroup, ValidationErrors} from '@angular/forms';
