@@ -12,7 +12,7 @@ describe('SignInComponent', () => {
       done => {
         // init
         const stubService = {
-          signUp: (email: string, password: string): Observable<boolean> => {
+          signIn: (email: string, password: string): Observable<boolean> => {
             return Observable.of(false);
           }
         };
@@ -34,7 +34,7 @@ describe('SignInComponent', () => {
       done => {
         // init
         const stubService = {
-          signUp: (email: string, password: string): Observable<boolean> => {
+          signIn: (email: string, password: string): Observable<boolean> => {
             return Observable.throw(new Error());
           }
         };

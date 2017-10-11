@@ -52,7 +52,7 @@ export class SignInComponent extends AbstractForm {
   }
 
   onSubmitSuccess() {
-    this.authService.signUp(this.email.value, this.password.value).subscribe(
+    this.authService.signIn(this.email.value, this.password.value).subscribe(
       success => {
         if (!success) {
           this.formGroup.setErrors({ authenticate: true });
