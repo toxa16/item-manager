@@ -1,3 +1,8 @@
+/**
+ * @copyright 2017 Anton Bakhurynskyi
+ * @licence MIT
+ * @see https://github.com/toxa16/item-manager
+ */
 import {FormGroup, ValidationErrors} from '@angular/forms';
 import {NoConnection} from '../common/errors';
 

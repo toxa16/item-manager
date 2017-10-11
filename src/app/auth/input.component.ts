@@ -1,3 +1,8 @@
+/**
+ * @copyright 2017 Anton Bakhurynskyi
+ * @licence MIT
+ * @see https://github.com/toxa16/item-manager
+ */
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {AsyncValidatorFn, FormControl} from '@angular/forms';
 
