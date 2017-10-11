@@ -1,2 +1,25 @@
 @import "~bootstrap/dist/css/bootstrap.min.css";
 @import "~font-awesome/css/font-awesome.min.css";
+
+.btn.is-pending {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.btn.is-pending span {
+  visibility: hidden;
+}
+
+.btn .pending-indicator {
+  display: none;
+}
+
+.btn.is-pending .pending-indicator {
+  display: block;
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
