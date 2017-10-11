@@ -57,8 +57,8 @@ export abstract class AbstractForm {
     }
     this.formGroup.updateValueAndValidity();
 
-    for (const control of Object.values(this.formGroup.controls)) {
-      control.clearAsyncValidators();
+    for (const key of Object.keys(this.formGroup.controls)) {
+      this.formGroup.controls[key].clearAsyncValidators();
     }
   }
 
@@ -67,8 +67,8 @@ export abstract class AbstractForm {
    * Verifies form validity before performing `onSubmitSuccess()` action.
    */
   public onSubmit(): void {
-    for (const control of Object.values(this.formGroup.controls)) {
-      control.markAsTouched();
+    for (const key of Object.keys(this.formGroup.controls)) {
+      this.formGroup.controls[key].markAsTouched();
     }
     if (this.formGroup.valid) {
       this.formGroup.markAsPending();
