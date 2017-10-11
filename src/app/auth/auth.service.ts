@@ -35,4 +35,10 @@ export class AuthService {
     this.users.push(newUser);
     return Observable.of(null).delay(this.latency);
   }
+
+  signIn(email: string, password: string): Observable<boolean> {
+    const foundUser = this.users.find(
+      user => user.email === email && user.password === password);
+    return Observable.of(!!foundUser).delay(this.latency);
+  }
 }

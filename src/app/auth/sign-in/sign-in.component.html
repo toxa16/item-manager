@@ -9,32 +9,52 @@
   <section class="row">
     <div class="col col-md-8 ml-auto mr-auto col-lg-6">
 
-      <div class="alert alert-danger mt-3">
+      <div *ngIf="formGroup.hasError('authenticate')" class="alert alert-danger mt-3">
         <span>Invalid login credentials.</span>
       </div>
+      <div *ngIf="formGroup.hasError('clientError')" class="alert alert-danger mt-3">
+        <span>
+          We've encountered an internal error.
+          Try <a href="/sign-in">reloading the page</a>.
+        </span><br>
+        <span>If the error remains, please contact our tech support.</span>
+      </div>
+      <div *ngIf="formGroup.hasError('serverError')" class="alert alert-danger mt-3">
+        There were problems while connecting to server. <a href="/sign-in">Try again</a>
+      </div>
 
-      <form id="signInForm">
+      <form (submit)="onSubmit()" id="signInForm">
 
-        <div class="form-group mt-4">
-          <input type="email" placeholder="Email" class="form-control is-invalid">
-          <div class="invalid-feedback">
-            Email address is invalid.
-          </div>
+        <div class="mt-4">
+          <app-input
+            ngDefaultControl
+            [formControl]="formGroup.controls['email']"
+            [errorMessage]="emailErrorMessage"
+            [placeholder]="'Email'">
+          </app-input>
         </div>
 
-        <div class="form-group mt-3">
-          <input type="password" placeholder="Password" class="form-control">
-          <a id="passwordResetLink" class="float-right mt-1" routerLink="/password-reset">
-            Forgot password?</a>
-        </div>
+        <app-input
+          ngDefaultControl
+          [formControl]="formGroup.controls['password']"
+          [errorMessage]="passwordErrorMessage"
+          [placeholder]="'Password'"
+          [type]="'password'">
+        </app-input>
+        <a id="passwordResetLink" class="float-right" routerLink="/password-reset">
+          Forgot password?</a>
 
         <div class="clearfix"></div>
 
         <div class="d-flex align-items-center mt-2">
-          <button type="submit" class="btn btn-primary">Sign In</button>
+          <button type="submit" class="btn btn-primary"
+                  [class.is-pending]="formGroup.pending">
+            <span>Sign In</span>
+            <i class="pending-indicator fa fa-spinner fa-pulse"></i>
+          </button>
           <span class="ml-3">
-              or <a id="signUpLink" routerLink="/sign-up">Sign Up</a>
-            </span>
+            or <a id="signUpLink" routerLink="/sign-up">Sign Up</a>
+          </span>
         </div>
 
       </form>
