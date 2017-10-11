@@ -6,9 +6,8 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/delay';
 import 'rxjs/add/operator/map';
 
-import {NoConnection} from '../common/errors';
 import {User} from './user';
-import {mockUsers} from './mock-users';
+import mockUsers from './mock-users';
 
 @Injectable()
 export class AuthService {
